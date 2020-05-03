@@ -17,9 +17,13 @@ app.use(express.static(publicDirectoryPath));
 const message = "Welcome!";
 
 io.on('connection', (socket) => {
-  socket.emit('message', generateMessage(message));
-  socket.broadcast.emit('message', generateMessage('A new user has joined!'));
-
+  
+  socket.on('join', ({ username, room }) => {
+    socket.join(room);
+    
+    socket.emit('message', generateMessage(message));
+    socket.broadcast.to(room).emit('message', generateMessage(`${username} has joined!`));
+  });
   socket.on('sendMessage', (msg, cb) => {
     const filter = new Filter();
 
@@ -28,7 +32,7 @@ io.on('connection', (socket) => {
     }
 
     if (msg !== "") {
-      io.emit('message', generateMessage(msg))
+      io.to('1').emit('message', generateMessage(msg))
     }
     cb();
   });
