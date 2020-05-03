@@ -7,11 +7,18 @@ const $locationButton = document.querySelector('#location-button');
 const $messages = document.querySelector('#message-container');
 
 const messageTemplate = document.querySelector('#message-template').innerHTML;
+const locationTemplate = document.querySelector('#location-template').innerHTML;
 
 socket.on('message', (message) => {
   console.log(message);
   const html = Mustache.render(messageTemplate, {message});
   $messages.insertAdjacentHTML('beforeend', html);
+});
+
+socket.on('locationMessage', (url) => {
+  console.log(url);
+  const urlLink = Mustache.render(locationTemplate, {url});
+  $messages.insertAdjacentHTML('beforeend', urlLink);
 });
 
 $messageForm.addEventListener('submit', (e) => {

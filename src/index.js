@@ -25,12 +25,15 @@ io.on('connection', (socket) => {
     if (filter.isProfane(msg)) {
       return cb('Profanity is not allowed')
     }
-    io.emit('message', msg)
+
+    if (msg !== "") {
+      io.emit('message', msg)
+    }
     cb();
   });
 
   socket.on('sendLocation', (coords, cb) => {
-    io.emit('message', `https://google.com/maps/?q=${coords.latitude},${coords.longitude}`)
+    io.emit('locationMessage', `https://google.com/maps/?q=${coords.latitude},${coords.longitude}`)
     cb();
   })
 
