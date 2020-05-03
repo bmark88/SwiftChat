@@ -9,4 +9,19 @@ document.querySelector('#message-form').addEventListener('submit', (e) => {
 
   const msg = e.target.elements.message.value
   socket.emit('sendMessage', msg);
-})
+});
+
+document.querySelector('#location-button').addEventListener('click', () => {
+  if (!navigator.geolocation) {
+    return alert('Geolocation is not supported by your browser.');
+  }
+
+  navigator.geolocation.getCurrentPosition((position) => {
+    const coords = {
+      latitude: position.coords.latitude,
+      longitude: position.coords.longitude
+    };
+
+    socket.emit('sendLocation', coords);
+  });
+});
