@@ -18,7 +18,8 @@
   },
   "homepage": "https://github.com/bmark88/chat-app#readme",
   "dependencies": {
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "socket.io": "^2.3.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.3"
