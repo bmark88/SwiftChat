@@ -20,7 +20,10 @@ socket.on('message', (message) => {
 
 socket.on('locationMessage', (url) => {
   console.log(url);
-  const urlLink = Mustache.render(locationTemplate, {url});
+  const urlLink = Mustache.render(locationTemplate, {
+    url,
+    createdAt: moment(url.createdAt).calendar()
+  });
   $messages.insertAdjacentHTML('beforeend', urlLink);
 });
 

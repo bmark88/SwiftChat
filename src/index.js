@@ -3,7 +3,7 @@ const http = require('http');
 const express = require('express');
 const socket = require('socket.io');
 const Filter = require('bad-words');
-const { generateMessage } = require('./utils/messages');
+const { generateMessage, generateLocationMessage } = require('./utils/messages');
 
 const app = express();
 const server = http.createServer(app);
@@ -14,7 +14,7 @@ const publicDirectoryPath = path.join(__dirname, '../public');
 
 app.use(express.static(publicDirectoryPath));
 
-const message = "Welcome!"
+const message = "Welcome!";
 
 io.on('connection', (socket) => {
   socket.emit('message', generateMessage(message));
@@ -34,7 +34,9 @@ io.on('connection', (socket) => {
   });
 
   socket.on('sendLocation', (coords, cb) => {
-    io.emit('locationMessage', `https://google.com/maps/?q=${coords.latitude},${coords.longitude}`)
+    const url = `https://google.com/maps/?q=${coords.latitude},${coords.longitude}`
+
+    io.emit('locationMessage', generateLocationMessage(url))
     cb();
   })
 
