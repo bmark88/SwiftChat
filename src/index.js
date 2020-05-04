@@ -29,6 +29,11 @@ io.on('connection', (socket) => {
     socket.emit('message', generateMessage('Moderator', 'Welcome!'));
     socket.broadcast.to(user.room).emit('message', generateMessage('Moderator', `${user.username} has joined!`));
 
+    io.to(user.room).emit('roomData', {
+      room: user.room,
+      users: getUsersInRoom(user.room)
+    });
+
     cb();
   });
   socket.on('sendMessage', (msg, cb) => {
@@ -56,6 +61,11 @@ io.on('connection', (socket) => {
 
     if (user) {
       io.to(user.room).emit('message', generateMessage('Moderator', `${user.username} has left!`));
+
+      io.to(user.room).emit('roomData', {
+        room: user.room,
+        users: getUsersInRoom(user.room)
+      });
     }
   });
 });
