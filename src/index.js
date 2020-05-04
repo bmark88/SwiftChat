@@ -15,8 +15,6 @@ const publicDirectoryPath = path.join(__dirname, '../public');
 
 app.use(express.static(publicDirectoryPath));
 
-const message = "Welcome!";
-
 io.on('connection', (socket) => {
   
   socket.on('join', ({ username, room }, cb) => {
@@ -28,28 +26,28 @@ io.on('connection', (socket) => {
     
     socket.join(user.room);
     
-    socket.emit('message', generateMessage(message));
-    socket.broadcast.to(user.room).emit('message', generateMessage(`${user.username} has joined!`));
+    socket.emit('message', generateMessage('Moderator', 'Welcome!'));
+    socket.broadcast.to(user.room).emit('message', generateMessage('Moderator', `${user.username} has joined!`));
 
     cb();
   });
   socket.on('sendMessage', (msg, cb) => {
     const filter = new Filter();
+    const user = getUser(socket.id);
 
     if (filter.isProfane(msg)) {
       return cb('Profanity is not allowed')
     }
 
-    if (msg !== "") {
-      io.to('1').emit('message', generateMessage(msg))
-    }
+    io.to(user.room).emit('message', generateMessage(user.username, msg))
     cb();
   });
 
   socket.on('sendLocation', (coords, cb) => {
     const url = `https://google.com/maps/?q=${coords.latitude},${coords.longitude}`
+    const user = getUser(socket.id);
 
-    io.emit('locationMessage', generateLocationMessage(url))
+    io.to(user.room).emit('locationMessage', generateLocationMessage(user.username, url))
     cb();
   })
 
@@ -57,7 +55,7 @@ io.on('connection', (socket) => {
     const user = removeUser(socket.id);
 
     if (user) {
-      io.to(user.room).emit('message', generateMessage(`${user.username} has left!`));
+      io.to(user.room).emit('message', generateMessage('Moderator', `${user.username} has left!`));
     }
   });
 });
