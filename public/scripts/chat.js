@@ -15,6 +15,8 @@ const sideBarTemplate = document.querySelector('#sidebar-template').innerHTML;
 //Options
 const { username, room } = Qs.parse(location.search, { ignoreQueryPrefix: true });
 
+localStorage.setItem('username', username);
+
 const autoScroll = () => {
   const $newMessage = $messages.lastElementChild;
 
@@ -35,11 +37,21 @@ const autoScroll = () => {
 
 socket.on('message', (message) => {
   console.log(message)
+
+  const currentUser = localStorage.getItem('username').toLowerCase();
+  let messageColor = '';
+
+  if (message.username === currentUser) {
+    messageColor = 'current-user';
+  }
+
   const html = Mustache.render(messageTemplate, {
     username: message.username,
     message: message.text,
+    style: messageColor,
     createdAt: moment(message.createdAt).calendar()
   });
+  
   $messages.insertAdjacentHTML('beforeend', html);
   autoScroll();
 });

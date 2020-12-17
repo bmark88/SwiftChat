@@ -3,7 +3,7 @@ const http = require('http');
 const express = require('express');
 const socket = require('socket.io');
 const Filter = require('bad-words');
-const { generateMessage, generateLocationMessage } = require('./utils/messages');
+const { generateMessage, generateLocationMessage, capitalize } = require('./utils/messages');
 const { addUser, removeUser, getUser, getUsersInRoom } = require('./utils/users');
 
 const app = express();
@@ -27,7 +27,7 @@ io.on('connection', (socket) => {
     socket.join(user.room);
     
     socket.emit('message', generateMessage('Moderator', 'Welcome!'));
-    socket.broadcast.to(user.room).emit('message', generateMessage('Moderator', `${user.username} has joined!`));
+    socket.broadcast.to(user.room).emit('message', generateMessage('Moderator', `${capitalize(user.username)} has joined!`));
 
     io.to(user.room).emit('roomData', {
       room: user.room,
@@ -60,7 +60,7 @@ io.on('connection', (socket) => {
     const user = removeUser(socket.id);
 
     if (user) {
-      io.to(user.room).emit('message', generateMessage('Moderator', `${user.username} has left!`));
+      io.to(user.room).emit('message', generateMessage('Moderator', `${capitalize(user.username)} has left!`));
 
       io.to(user.room).emit('roomData', {
         room: user.room,

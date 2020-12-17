@@ -45,6 +45,7 @@ button {
     color: white;
     font-size: 16px;
     transition: background .3s ease;
+    
 }
 
 button:hover {
@@ -72,6 +73,7 @@ button:disabled {
     background: #F7F7FA;
     padding: 24px;
     width: 250px;
+    border-radius: 16px;
 }
 
 .centered-form button {
@@ -115,22 +117,36 @@ button:disabled {
 /* Message Styles */
 
 .message {
-    margin-bottom: 16px;   
+    margin-bottom: 16px; 
+    background-color: #0084FF;  
+    color: #FFFFFF;
+    border-radius: 16px;
+    padding: 0.5rem 1rem;
+    width: max-content;
 }
 
 .message__name {
     font-weight: 600;
     font-size: 14px;
     margin-right: 8px;
+    text-transform: capitalize;
 }
 
 .message__meta {
-    color: #777;
+    color: #D3D3D3;
     font-size: 14px;
 }
 
 .message a {
     color: #0070CC;
+}
+
+.message p:last-of-type {
+    padding-top: 0.5rem;
+}
+
+.message.current-user {
+    background-color: #6F7072;
 }
 
 /* Message Composition Styles */
@@ -166,7 +182,9 @@ button:disabled {
     font-weight: 400;
     font-size: 22px;
     background: #2c2f3a;
-    padding: 24px;   
+    padding: 24px;  
+    text-align: center; 
+    text-transform: capitalize;
 }
 
 .list-title {
@@ -180,4 +198,8 @@ button:disabled {
     list-style-type: none;
     font-weight: 300;
     padding: 12px 24px 0 24px;
+}
+
+.users li {
+    text-transform: capitalize;
 }
