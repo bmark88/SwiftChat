@@ -17,9 +17,12 @@ const queryString = Qs.parse(location.search, { ignoreQueryPrefix: true });
 
 let { username, room } = queryString;
 
+// Error handle for edge case when user manually inputs query params into url
 if (!queryString.username) {
   username = 'Guest';
-} else if (!queryString.room) {
+} 
+
+if (!queryString.room) {
   room = 'General';
 }
 
