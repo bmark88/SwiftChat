@@ -13,7 +13,15 @@ const locationTemplate = document.querySelector('#location-template').innerHTML;
 const sideBarTemplate = document.querySelector('#sidebar-template').innerHTML;
 
 //Options
-const { username, room } = Qs.parse(location.search, { ignoreQueryPrefix: true });
+const queryString = Qs.parse(location.search, { ignoreQueryPrefix: true });
+
+let { username, room } = queryString;
+
+if (!queryString.username) {
+  username = 'Guest';
+} else if (!queryString.room) {
+  room = 'General';
+}
 
 localStorage.setItem('username', username);
 
